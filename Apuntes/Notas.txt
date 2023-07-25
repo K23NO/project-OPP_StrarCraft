@@ -1,0 +1,108 @@
+Implementar en c++ el  videojuego STARCRAFT: BOOD WAR, en el que diferentes personajes puedan enfrentarse
+y hacerce daño durante dicho enfretamiento (daño representado enm cantidad numerica)
+Cada personaje puede resistir cierta cantidad de puntos de daño antes de ser derrotado
+Por cada ataque se reduciara la vida del que recibe el ataque
+
+Dialogo de combate:
+    El  personaje 1 atacó al personaje 2
+    El personaje 2 le quitaron 9 puntos de vida
+
+/* En este video juego exixten personajes de tres planetas: 
+    -  Los Terran (provienen de la tierra)
+    - Los protos (proviene del planeta AUIR)
+    - Los Zergs (planeta ZERUS)*/
+
+//Cada unidad tiene atributos como:
+
+/* - Puntos de vida ( si se agotan = muere)
+- Tipo: terrestre o aereo
+- Puntos de daño que hacen a los terrestres
+- tipo de daño que hacen unidades terrestres
+- Puntos de daño que hacen a los aereos
+- tipo de daño que hacen unidades aereas
+- Puntos de armadura (reducen el daño recibido)
+- tamaño (pequeño, mediano, grande) */
+
+//cada clase tiene caracteriticas propias
+/*protos: tienen una caracteristica llamada escudo. Escudo = puntos de vida adicionales
+         Cuasndo una unidad protos es atacada primero se le deben debilitar
+         los puntos de escudo, antes de debilitar los puntos de vida.
+         El escudo de protos recibe el 100% del daño de un ataque sin importar el 
+         tipo de ataque ()*/
+/* Zerg: tiene 2 caractertisticas peculiare:
+    a) "Autodestrucción"-> ´puede ser verdadera o falsa. Aalgunas unidades se autodestruyen
+        después de realizar un ataque otras no. Si se autodestruyen son : "Infestd" y "Scourge". 
+        Estas dos unidades explotan al atacar a sus oponentes. Al atacar, la unidad atacante
+        muere inmediamente después de hacerle daño al defensor
+
+    b) "recibio primer ataque" ->  La sunidades de Zerg recuperan 1 punto de vida tras ser atacadas
+    por primera vez, ya que su cuerpo se regenera. Sin embargo, esta autoregeneración no se raliza si es que 
+    la unidad esta muerta
+    */
+
+//! Consideraciones especiales: 
+/* - El tipo de daño tiene un efecto sobre los puntos de daño que se infligen a los enemigos 
+Los ataques de tipo Explosivo dañan a las unidades medianas (75%) y aún menos a las pequeñas (50%), pero atacan al 100% a los grandes
+Los ataques de tipo normal le hacen el mismo daño a los enemigos de cualquier tamaño ->100%
+los ataques de tipo contusivo -> dañan  menos a las unidades medianas (50%) y aún menos a los grandes (25%), pero 100% a las pequeños
+  */
+
+// Se tienen conjuntos de guerreros de cada raza, cada uno con sus propias caracteristicas(vida, blindaje, daño terrestre, daño aáreo, tamaño, tipo)
+
+//Pide implenetar un programa en c++, que permita simular un combate enrte unidades de la entreha starcfatcf: brood war
+// Los personajes que se tomarán en cuenta son:
+/*Terran
+    Batlecuiriser-> vida: 500; blindaje: 3; dañoTerrestre: 25(normal), dañoAereo: 25(normal), Tamaño: grande, Tipo: volador 
+    Firebat-> vida 50; blindaje: 1; dañoTerrestre: 16(contusivo), dañoAereo: 0, Tamaño: pequeño, Tipo: terrestre
+    Ghost-> vida 45; blindaje: 0; dañoTerrestre: 10(contusivo), dañoAereo: 10(contusivo), Tamaño: pequeño, Tipo: terrestre
+    Goliath-> vida 125; blindaje: 1; dañoTerrestre: 12(normal), dañoAereo: 20(explosivo), Tamaño: grande, Tipo: terrestre
+    Marine-> vida 40; blindaje: 0; dañoTerrestre: 6(normal), dañoAereo: 6(normal), Tamaño: grande, Tipo: terrestre    
+    Duran-> vida 200; blindaje: 2; 
+    SCV -> vida 60; blindaje: 0; dañoTerrestre: 5(normal), dañoAereo: 0, Tamaño: pequeño, Tipo: terrestre
+    Tank-> vida 150; blindaje: 1; dañoTerrestre: 70(explosivo), dañoAereo: 0, Tamaño: grande, Tipo: terrestre
+    Valkyrie-> vida 200; blindaje: 2; dañoTerrestre: 0, dañoAereo: 48(explosivo), Tamaño: grande, Tipo: volador
+    Vulture-> vida 80; blindaje: 0; dañoTerrestre: 20(contusivo), dañoAereo: 0, Tamaño: mediano, Tipo: terrestre
+    Wraith-> vida 120; blindaje: 0; dañoTerrestre: 8(normal), dañoAereo: 20(explosivo), Tamaño: grande, Tipo: volador
+    */
+/*Protos
+    Arbiter-> vida 200, escudo 150; blindaje: 1; dañoTerrestre: 10(explosivo), dañoAereo: 10(explosivo), Tamaño: grande, Tipo: volador
+    Archon-> vida 10, escudo 350; blindaje: 0; dañoTerrestre: 30(normal), dañoAereo: 0, Tamaño: grande, Tipo: terrestre
+    Carrier-> vida 300, escudo 150; blindaje: 4; dañoTerrestre: 48(normal), dañoAereo: 48(normal), Tamaño: grande, Tipo: volador
+    Corsair-> vida 100, escudo 80; blindaje: 1; dañoTerrestre: 0, dañoAereo: 6(explosivo), Tamaño: mediano, Tipo: volador
+    Templar-> vida 80, escudo 40; blindaje: 1; dañoTerrestre: 40(normal), dañoAereo: 0, Tamaño: pequeño, Tipo: terrestre
+    Dragoon-> vida 100, escudo 80; blindaje: 1; dañoTerrestre: 20(explosivo), dañoAereo: 20(explosivo), Tamaño: grande, Tipo: terrestre
+    Probe-> vida 20, escudo 20; blindaje: 0; dañoTerrestre: 5(normal), dañoAereo: 0, Tamaño: pequeño, Tipo: terrestre
+    Reaver-> vida 100, escudo 80; blindaje: 1; dañoTerrestre: 125(normal), dañoAereo: 0, Tamaño: grande, Tipo: volador
+    Scout-> vida 150, escudo 100; blindaje: 0; dañoTerrestre: 8(normal), dañoAereo: 28(explosivo), Tamaño: grande, Tipo: volador
+    Zealot-> vida 100, escudo 60; blindaje: 1; dañoTerrestre: 16(normal), dañoAereo: 0, Tamaño: pequeño, Tipo: terrestre
+    */
+/*Zerg
+    Broodling-> vida 30; blindaje: 0; dañoTerrestre: 4(normal), dañoAereo: 0, Tamaño: pequeño, Tipo: terrestre, autodestruccion: no
+    Devourer-> vida 250; blindaje: 2; dañoTerrestre: 0, dañoAereo: 25(explosivo), Tamaño: grande, Tipo: volador, autodestruccion: no
+    Drone-> vida 40; blindaje: 0; dañoTerrestre: 5(normal), dañoAereo: 0, Tamaño: pequeño, Tipo: terrestre, autodestruccion: no
+    Guardian-> vida 150; blindaje: 2; dañoTerrestre: 20(normal), dañoAereo: 0, Tamaño: grande, Tipo: terrestre, autodestruccion: no
+    Hydralisk-> vida 80; blindaje: 0; dañoTerrestre: 10(ecplosivo), dañoAereo: 10(explosivo), Tamaño: mediano, Tipo: volador, autodestruccion: no
+    Infested-> vida 60; blindaje: 0; dañoTerrestre: 500(explosivo), dañoAereo: 0, Tamaño: pequeño, Tipo: terrestre, autodestruccion: si
+    Lurker-> vida 125; blindaje: 1; dañoTerrestre: 20(normal), dañoAereo: 0, Tamaño: mediano, Tipo: terrestre, autodestruccion: no
+    Mutalisk-> vida 120; blindaje: 0; dañoTerrestre: 9(normal), dañoAereo: 9(normal), Tamaño: pequeño, Tipo: volador, autodestruccion: no
+    Scourge-> vida 25; blindaje: 0; dañoTerrestre: 0, dañoAereo: 110(normal), Tamaño: pequeño, Tipo: volador, autodestruccion: si
+    Ultralisk-> vida 400; blindaje: 3; dañoTerrestre: 20(normal), dañoAereo: 0, Tamaño: grande, Tipo: terrestre, autodestruccion: no
+    Zergling-> vida 35; blindaje: 0; dañoTerrestre: 5(normal), dañoAereo: 0, Tamaño: pequeño, Tipo: terrestre, autodestruccion: no
+    */
+//! Pide:
+Representar unidades del videojuego StarcCraft: Brood War, y deberá permitir que se enfrenten debilitando sus puntos de vida
+En base a los calculos con:
+    * Los puntos de daño del atacante
+    *Si el enemigo es de tipo terrestes, se usa el ataque terrestre
+    *Si el enemigo es de tipo aereo, se usa el ataque aereo
+    * Si el atacante no tiene ataque para el tipo del enemig, se deberá impimir el mensaje correspondiente
+    * El tamaño del enemigo y el tipo de ataque
+    * los puntos de vida del enemigo
+    * los puntos de escudo, en caso se tuviera escudos
+    * Si el enemigo es Zerg, se deberá controlar que en el primer ataque se curan 1 punto
+//TODO: Programa deberá simular combates de 1 contra 1, así como tambipen combate de varios contra varios
+
+
+
+Consultas A fore 
+https://chat.forefront.ai/share/2w0cz03hu7bzt680

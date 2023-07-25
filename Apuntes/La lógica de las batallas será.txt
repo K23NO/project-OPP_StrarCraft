@@ -1,0 +1,18 @@
+La lógica de las batallas será: 
+El atacante le proporcionará un ataque, si el enemigo es tipo terrestre, se usa el ataque terretres. Si el enemigo es tipo volador, se usan los atques aéreos. Si el atacante no tiene un atque para el tipo de  ebemigo, se debe de imprimir el mensaje correspondiente.
+
+Las consideraciones especiales. Las he considerado dentro de la matriz
+//columna -> tamaño del enemigo
+    // columna 1 -> pequeno
+    // columna 2 -> mediano
+    // columna 3 -> grande
+    // fila->  tipo de ataque
+    // 1. Normal
+    // 2. Explosivo
+    // 3. Contusivo
+    double matrizEspecial[3][3] = {{1,1,1},{0.5 , 0.75 ,1 },{1, 0.5 , 0.25}};
+Lo que significa que si su tamaño es normal, recibe el 100% del ataque, y si es de pequeño, y el ataque es explosivo solo recibe el 50% del ataque
+
+Estos ataques afectan primero a los puntos de esucdo, es caso los tuviera. Después a lo puntos de blindaje, de la misma manera. Hasta llegar a los puntos de vida ( si llegan a 0 muere esa unidad)
+
+Si el enemigo es Zerg, deberá controlar que el primer ataque se cura 1 punto
